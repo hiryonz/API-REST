@@ -6,6 +6,7 @@ import java.util.Optional;
 import com.restaurantApi.restaurantApi.model.custumers.CustumerDto;
 
 public interface CustumerService {
+
     CustumerDto save(CustumerDto custumer);
 
     boolean deleteById(String id);

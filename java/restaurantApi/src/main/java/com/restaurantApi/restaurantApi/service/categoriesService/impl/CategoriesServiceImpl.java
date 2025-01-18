@@ -16,7 +16,8 @@ public class CategoriesServiceImpl implements CategoriesService {
     @Autowired
     private CategoriesRepo categoriesRepo;
 
-    private CategoriesDto convertToDto(CategoriesEntity categoriesEntity) {
+    @Override
+    public CategoriesDto convertToDto(CategoriesEntity categoriesEntity) {
         return CategoriesDto.builder()
         .id_category(categoriesEntity.getId_category())
         .name(categoriesEntity.getName())
@@ -24,7 +25,8 @@ public class CategoriesServiceImpl implements CategoriesService {
         .build();
     }
 
-    private CategoriesEntity convertToEntity(CategoriesDto categoriesDto) {
+    @Override
+    public CategoriesEntity convertToEntity(CategoriesDto categoriesDto) {
         return CategoriesEntity.builder()
         .id_category(categoriesDto.getId_category())
         .name(categoriesDto.getName())
