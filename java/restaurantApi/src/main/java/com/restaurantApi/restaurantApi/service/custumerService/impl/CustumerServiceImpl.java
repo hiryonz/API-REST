@@ -1,11 +1,11 @@
 package com.restaurantApi.restaurantApi.service.custumerService.impl;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.restaurantApi.restaurantApi.model.custumers.CustumerDto;
 import com.restaurantApi.restaurantApi.model.custumers.CustumerEntity;
@@ -17,7 +17,7 @@ import com.restaurantApi.restaurantApi.repository.CustumerRepo;
 import com.restaurantApi.restaurantApi.service.custumerService.CustumerService;
 import com.restaurantApi.restaurantApi.service.platesService.PlatesService;
 
-
+@Service
 public class CustumerServiceImpl implements CustumerService {
     
     @Autowired

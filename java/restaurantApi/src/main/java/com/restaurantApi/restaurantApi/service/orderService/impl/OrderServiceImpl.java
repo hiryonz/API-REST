@@ -1,11 +1,11 @@
 package com.restaurantApi.restaurantApi.service.orderService.impl;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.restaurantApi.restaurantApi.model.custumers.CustumerDto;
 import com.restaurantApi.restaurantApi.model.custumers.CustumerEntity;
@@ -14,15 +14,11 @@ import com.restaurantApi.restaurantApi.model.order_items.OrderItemsEntity;
 import com.restaurantApi.restaurantApi.model.orders.OrdersDto;
 import com.restaurantApi.restaurantApi.model.orders.OrdersEntity;
 import com.restaurantApi.restaurantApi.repository.OrdersRepo;
-import com.restaurantApi.restaurantApi.service.custumerService.CustumerService;
 import com.restaurantApi.restaurantApi.service.orderService.OrderService;
 import com.restaurantApi.restaurantApi.service.platesService.PlatesService;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 
+@Service
 public class OrderServiceImpl implements OrderService {
 
     @Autowired
@@ -36,11 +32,11 @@ public class OrderServiceImpl implements OrderService {
     public OrdersDto convertToDto(OrdersEntity entity) {
         //primero creamos el custumer dto 
         CustumerDto custumerDto = CustumerDto.builder()
-        .id_custumer(entity.getCustumerEntity().getId_custumer())
-        .name(entity.getCustumerEntity().getName())
-        .email(entity.getCustumerEntity().getEmail())
-        .phone(entity.getCustumerEntity().getPhone())
-        .address(entity.getCustumerEntity().getAddress())
+        .id_custumer(entity.getCustumer().getId_custumer())
+        .name(entity.getCustumer().getName())
+        .email(entity.getCustumer().getEmail())
+        .phone(entity.getCustumer().getPhone())
+        .address(entity.getCustumer().getAddress())
         .build();
 
         //luego creamo la lista de order items dto
@@ -88,7 +84,7 @@ public class OrderServiceImpl implements OrderService {
         .order_date(dto.getOrder_date())
         .total(dto.getTotal())
         .status(dto.getStatus())
-        .custumerEntity(custumerEntity)
+        .custumer(custumerEntity)
         .orderItems(orderItemsEntity)
         .build();
     }

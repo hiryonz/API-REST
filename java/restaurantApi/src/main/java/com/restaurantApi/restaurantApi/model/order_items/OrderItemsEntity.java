@@ -4,6 +4,8 @@ import com.restaurantApi.restaurantApi.model.orders.OrdersEntity;
 import com.restaurantApi.restaurantApi.model.plates.PlatesEntity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
@@ -22,12 +24,13 @@ import lombok.NoArgsConstructor;
 @Table(name = "order_item")
 public class OrderItemsEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_orderItem;
 
     //fk with orders
     @OneToOne
     @JoinColumn(name = "id_orders")
-    private OrdersEntity ordersEntity;
+    private OrdersEntity orders;
 
     //fk with plates
     @OneToOne

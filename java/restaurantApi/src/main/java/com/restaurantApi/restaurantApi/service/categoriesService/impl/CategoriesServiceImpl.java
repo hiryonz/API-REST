@@ -5,12 +5,14 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.restaurantApi.restaurantApi.model.categories.CategoriesDto;
 import com.restaurantApi.restaurantApi.model.categories.CategoriesEntity;
 import com.restaurantApi.restaurantApi.repository.CategoriesRepo;
 import com.restaurantApi.restaurantApi.service.categoriesService.CategoriesService;
 
+@Service
 public class CategoriesServiceImpl implements CategoriesService {
     
     @Autowired
@@ -44,9 +46,8 @@ public class CategoriesServiceImpl implements CategoriesService {
 
     @Override
     public boolean deleteById(Long id) {
-        final Optional<CategoriesEntity> categoriesEntity = categoriesRepo.findById(id);
 
-        if(categoriesEntity.isEmpty()) {
+        if(!this.isExistsCategories(id)) {
             return false;
         }
         
@@ -75,6 +76,16 @@ public class CategoriesServiceImpl implements CategoriesService {
         return categoriesDtos;
     }
 
+    @Override
+    public boolean isExistsCategories(Long id) {
+        CategoriesEntity categoriesEntity = categoriesRepo.findById(id).orElse(null);
+
+        if (categoriesEntity == null) {
+            return false;
+        }
+
+        return true;
+    }
 
 
 }

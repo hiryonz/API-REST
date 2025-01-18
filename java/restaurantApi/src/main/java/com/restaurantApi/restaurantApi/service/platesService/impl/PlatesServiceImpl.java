@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.restaurantApi.restaurantApi.model.plates.PlatesDto;
 import com.restaurantApi.restaurantApi.model.plates.PlatesEntity;
@@ -12,6 +13,7 @@ import com.restaurantApi.restaurantApi.repository.PlatesRepo;
 import com.restaurantApi.restaurantApi.service.categoriesService.CategoriesService;
 import com.restaurantApi.restaurantApi.service.platesService.PlatesService;
 
+@Service
 public class PlatesServiceImpl implements PlatesService {
     
     @Autowired

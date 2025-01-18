@@ -18,4 +18,7 @@ public interface CategoriesService {
     Optional<CategoriesDto> findById(Long id);
 
     List<CategoriesDto> findAll();
+
+    boolean isExistsCategories(Long id);
+
 }
