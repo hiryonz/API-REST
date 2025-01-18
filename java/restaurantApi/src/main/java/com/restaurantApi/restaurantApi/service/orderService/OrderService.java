@@ -3,8 +3,6 @@ package com.restaurantApi.restaurantApi.service.orderService;
 import java.util.List;
 import java.util.Optional;
 
-import com.restaurantApi.restaurantApi.model.order_items.OrderItemsDto;
-import com.restaurantApi.restaurantApi.model.order_items.OrderItemsEntity;
 import com.restaurantApi.restaurantApi.model.orders.OrdersDto;
 import com.restaurantApi.restaurantApi.model.orders.OrdersEntity;
 
@@ -17,11 +15,11 @@ public interface OrderService {
 
     OrdersDto save(OrdersDto orders);
 
-    boolean deleteById(String id);
+    boolean deleteById(Long id);
 
-    Optional<OrdersDto> findById(String id);
+    Optional<OrdersDto> findById(Long id);
 
     List<OrdersDto> findAll();
 
-    boolean isExistsOrders(String id);
+    boolean isExistsOrders(Long id);
 }

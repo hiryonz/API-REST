@@ -9,3 +9,4 @@ import com.restaurantApi.restaurantApi.model.custumers.CustumerEntity;
 public interface CustumerRepo extends JpaRepository<CustumerEntity, Long> {
     
 }
+

@@ -2,6 +2,7 @@ package com.restaurantApi.restaurantApi.service.custumerService.impl;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +17,6 @@ import com.restaurantApi.restaurantApi.repository.CustumerRepo;
 import com.restaurantApi.restaurantApi.service.custumerService.CustumerService;
 import com.restaurantApi.restaurantApi.service.platesService.PlatesService;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 
 public class CustumerServiceImpl implements CustumerService {
     
@@ -60,66 +56,76 @@ public class CustumerServiceImpl implements CustumerService {
             .build();
     }
 
-
-
-
-
-
-
-
-        private Long id_orders;
-    private Date order_date;
-    private double total;
-    private int status; //enum (pendiente, preparacion, listo, entregado)
-
-    //id_custumer fk
-    @OneToMany
-    @JoinColumn(name = "id_custumers")
-    private CustumerEntity custumerEntity;
-
-  
-
     private CustumerEntity convertToEntity(CustumerDto dto) {
-        // Convertimos las OrderItemsEntity
-        List<OrderItemsEntity> orderItemsEntities = dto.getOrders().stream()
-        .flatMap(orderDto -> orderDto.getOrder_items().stream()
-            .map(orderItemDto -> {
-                OrderItemsEntity orderItemEntity = new OrderItemsEntity();
-                orderItemEntity.setId_orderItem(orderItemDto.getId_orderItem());
-                orderItemEntity.setPlatesEntity(platesService.convertToEntity(orderItemDto.getPlatesDto()));  // Convertir de DTO a entidad PlatesEntity
-                return orderItemEntity;
-            }))
-        .collect(Collectors.toList());
-
-        // Convertimos las OrdersEntity y asociamos los OrderItemsEntity
-        List<OrdersEntity> ordersEntities = dto.getOrders().stream()
-        .map(orderDto -> {
-            OrdersEntity orderEntity = new OrdersEntity();
-            orderEntity.setId_orders(orderDto.getId_orders());
-            orderEntity.setOrder_date(orderDto.getOrder_date());
-            orderEntity.setTotal(orderDto.getTotal());
-            orderEntity.setStatus(orderDto.getStatus());
-
-            // Asignamos la lista de OrderItemsEntity a la orden
-            orderEntity.setOrderItems(orderItemsEntities.stream()
-                .filter(orderItem -> orderItem.getOrdersEntity().getId_orders().equals(orderEntity.getId_orders()))
-                .collect(Collectors.toList()));
-
-            return orderEntity;
-        })
-        .collect(Collectors.toList());
-
-        // Finalmente, creamos la entidad CustumerEntity y asignamos las órdenes
-        CustumerEntity custumerEntity = new CustumerEntity();
-        custumerEntity.setId_custumer(dto.getId_custumer());
-        custumerEntity.setName(dto.getName());
-        custumerEntity.setEmail(dto.getEmail());
-        custumerEntity.setPhone(dto.getPhone());
-        custumerEntity.setAddress(dto.getAddress());
-        custumerEntity.setOrders(ordersEntities);  // Asignamos las órdenes convertidas
-
-        return custumerEntity;
-
+    
+        // Ahora, convertimos las OrdersDto y las agregamos con el OrderItemsDto respectivo
+        List<OrdersEntity> ordersEntity = dto.getOrders().stream()
+            .map(order -> OrdersEntity.builder()
+                .id_orders(order.getId_orders())
+                .order_date(order.getOrder_date())
+                .total(order.getTotal())
+                .status(order.getStatus())
+                .orderItems(order.getOrder_items().stream().map(order_item -> OrderItemsEntity.builder()
+                .id_orderItem(order_item.getId_orderItem())
+                .platesEntity(platesService.convertToEntity(order_item.getPlatesDto()))
+                .build()).collect(Collectors.toList()))
+                .build())
+            .collect(Collectors.toList());
+    
+        // Finalmente, creamos el CustumerDto y asignamos la lista de ordersDto
+        return CustumerEntity.builder()
+            .id_custumer(dto.getId_custumer())
+            .name(dto.getName())
+            .email(dto.getEmail())
+            .phone(dto.getPhone())
+            .address(dto.getAddress())
+            .orders(ordersEntity)  // Aquí es donde agregamos las órdenes al DTO
+            .build();
     }
+
+    @Override
+    public CustumerDto save(CustumerDto custumer) {
+        CustumerEntity custumerEntity = convertToEntity(custumer);
+        CustumerEntity savedCustumer = custumerRepo.save(custumerEntity);
+
+        return convertToDto(savedCustumer);
+    }
+
+    @Override
+    public boolean deleteById(Long id) {
+
+        if(!this.isExistsCustumer(id)) { return false; }
+
+        custumerRepo.deleteById(id);
+        return true;
+    }
+
+    @Override
+    public Optional<CustumerDto> findById(Long id) {
+        Optional<CustumerEntity> custumerEntity = custumerRepo.findById(id);
+        Optional<CustumerDto> custumerDto = custumerEntity.map(custumer -> convertToDto(custumer));
+
+        return custumerDto;
+    }
+
+    @Override
+    public List<CustumerDto> findAll() {
+        List<CustumerEntity> custumerEntity = custumerRepo.findAll();
+        List<CustumerDto> custumerDtos = custumerEntity.stream().map(custumer -> convertToDto(custumer)).collect(Collectors.toList());
+
+        return custumerDtos;    
+    }
+
+    @Override
+    public boolean isExistsCustumer(Long id) {
+        CustumerEntity custumerEntity = custumerRepo.findById(id).orElse(null);
+
+        if (custumerEntity == null) {
+            return false;
+        }
+
+        return true;
+    }
+    
 }
     

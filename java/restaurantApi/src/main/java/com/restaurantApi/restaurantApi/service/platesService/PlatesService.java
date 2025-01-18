@@ -14,11 +14,11 @@ public interface PlatesService {
 
     PlatesDto save(PlatesDto orders);
 
-    boolean deleteById(String id);
+    boolean deleteById(Long id);
 
-    Optional<PlatesDto> findById(String id);
+    Optional<PlatesDto> findById(Long id);
 
     List<PlatesDto> findAll();
 
-    boolean isExistsPlates(String id);
+    boolean isExistsPlates(Long id);
 }

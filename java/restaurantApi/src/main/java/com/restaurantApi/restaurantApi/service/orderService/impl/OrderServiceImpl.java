@@ -94,34 +94,52 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrdersDto save(OrdersDto orders) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'save'");
+public OrdersDto save(OrdersDto orders) {
+    OrdersEntity ordersEntity = convertToEntity(orders);
+    OrdersEntity savedOrder = ordersRepo.save(ordersEntity);
+
+    return convertToDto(savedOrder);
+}
+
+@Override
+public boolean deleteById(Long id) {
+    if (!this.isExistsOrders(id)) {
+        return false;
     }
 
-    @Override
-    public boolean deleteById(String id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteById'");
+    ordersRepo.deleteById(id);
+    return true;
+}
+
+@Override
+public Optional<OrdersDto> findById(Long id) {
+    Optional<OrdersEntity> ordersEntity = ordersRepo.findById(id);
+    Optional<OrdersDto> ordersDto = ordersEntity.map(order -> convertToDto(order));
+
+    return ordersDto;
+}
+
+@Override
+public List<OrdersDto> findAll() {
+    List<OrdersEntity> ordersEntities = ordersRepo.findAll();
+    List<OrdersDto> ordersDtos = ordersEntities.stream()
+        .map(order -> convertToDto(order))
+        .collect(Collectors.toList());
+
+    return ordersDtos;
+}
+
+@Override
+public boolean isExistsOrders(Long id) {
+    OrdersEntity ordersEntity = ordersRepo.findById(id).orElse(null);
+
+    if (ordersEntity == null) {
+        return false;
     }
 
-    @Override
-    public Optional<OrdersDto> findById(String id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findById'");
-    }
+    return true;
+}
 
-    @Override
-    public List<OrdersDto> findAll() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
-    }
-
-    @Override
-    public boolean isExistsOrders(String id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isExistsOrders'");
-    }
 
     
 }

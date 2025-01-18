@@ -9,12 +9,12 @@ public interface CustumerService {
 
     CustumerDto save(CustumerDto custumer);
 
-    boolean deleteById(String id);
+    boolean deleteById(Long id);
 
-    Optional<CustumerDto> findById(String id);
+    Optional<CustumerDto> findById(Long id);
 
     List<CustumerDto> findAll();
 
-    boolean isExistsCustumer(String id);
+    boolean isExistsCustumer(Long id);
 
 }

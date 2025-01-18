@@ -2,6 +2,7 @@ package com.restaurantApi.restaurantApi.service.platesService.impl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -53,33 +54,53 @@ public class PlatesServiceImpl implements PlatesService {
     }
 
     @Override
-    public PlatesDto save(PlatesDto orders) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'save'");
+    public PlatesDto save(PlatesDto plates) {
+        PlatesEntity platesEntity = convertToEntity(plates);
+        PlatesEntity savedPlate = platesRepo.save(platesEntity);
+
+        return convertToDto(savedPlate);
     }
 
     @Override
-    public boolean deleteById(String id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteById'");
+    public boolean deleteById(Long id) {
+        if (!this.isExistsPlates(id)) {
+            return false;
+        }
+
+        platesRepo.deleteById(id);
+        return true;
     }
 
     @Override
-    public Optional<PlatesDto> findById(String id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findById'");
+    public Optional<PlatesDto> findById(Long id) {
+        Optional<PlatesEntity> platesEntity = platesRepo.findById(id);
+        Optional<PlatesDto> platesDto = platesEntity.map(plate -> convertToDto(plate));
+
+        return platesDto;
     }
 
     @Override
     public List<PlatesDto> findAll() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
+        List<PlatesEntity> platesEntities = platesRepo.findAll();
+        List<PlatesDto> platesDtos = platesEntities.stream()
+            .map(plate -> convertToDto(plate))
+            .collect(Collectors.toList());
+
+        return platesDtos;
     }
 
     @Override
-    public boolean isExistsPlates(String id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isExistsPlates'");
+    public boolean isExistsPlates(Long id) {
+        PlatesEntity platesEntity = platesRepo.findById(id).orElse(null);
+
+        if (platesEntity == null) {
+            return false;
+        }
+
+        return true;
     }
+
+
+
 }
 
