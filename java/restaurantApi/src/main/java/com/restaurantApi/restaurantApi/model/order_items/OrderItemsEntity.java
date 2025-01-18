@@ -1,0 +1,36 @@
+package com.restaurantApi.restaurantApi.model.order_items;
+
+import com.restaurantApi.restaurantApi.model.orders.OrdersEntity;
+import com.restaurantApi.restaurantApi.model.plates.PlatesEntity;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+
+@Data
+@Entity
+@Table(name = "order_item")
+public class OrderItemsEntity {
+    @Id
+    private Long id_orderItem;
+
+    //fk with orders
+    @OneToOne
+    @JoinColumn(name = "id_orders")
+    private OrdersEntity ordersEntity;
+
+    //fk with plates
+    @OneToOne
+    @JoinColumn(name = "id_plates")
+    private PlatesEntity platesEntity;
+}
