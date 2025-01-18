@@ -1,5 +1,9 @@
 package com.restaurantApi.restaurantApi.model.custumers;
 
+import java.util.List;
+
+import com.restaurantApi.restaurantApi.model.orders.OrdersDto;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,4 +19,5 @@ public class CustumerDto {
     private String email;
     private int phone;
     private String address;
+    private List<OrdersDto> orders;
 }
