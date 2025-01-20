@@ -21,7 +21,7 @@ public class OrdersDto {
     private Date order_date;
     private double total;
     private int status; //enum (pendiente, preparacion, listo, entregado)
-    private List<OrderItemsDto> order_items;
+    private List<OrderItemsDto> orderItems;
     //id_custumer fk
-    private CustumerDto custumerDto;
+    private Long id_custumer;
 }

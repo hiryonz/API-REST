@@ -13,6 +13,7 @@ import com.restaurantApi.restaurantApi.model.order_items.OrderItemsDto;
 import com.restaurantApi.restaurantApi.model.order_items.OrderItemsEntity;
 import com.restaurantApi.restaurantApi.model.orders.OrdersDto;
 import com.restaurantApi.restaurantApi.model.orders.OrdersEntity;
+import com.restaurantApi.restaurantApi.model.plates.PlatesEntity;
 import com.restaurantApi.restaurantApi.repository.CustumerRepo;
 import com.restaurantApi.restaurantApi.service.custumerService.CustumerService;
 import com.restaurantApi.restaurantApi.service.platesService.PlatesService;
@@ -27,24 +28,31 @@ public class CustumerServiceImpl implements CustumerService {
     private PlatesService platesService;
 
 
-    private CustumerDto convertToDto(CustumerEntity entity) {
-    
+    @Override
+    public CustumerDto convertToDto(CustumerEntity entity) {
+        if(entity == null) { return null; }
+
+
+        List<OrdersDto> ordersDto = null;
+        
         // Ahora, convertimos las OrdersDto y las agregamos con el OrderItemsDto respectivo
-        List<OrdersDto> ordersDto = entity.getOrders().stream()
-            .map(order -> OrdersDto.builder()
-                .id_orders(order.getId_orders())
-                .order_date(order.getOrder_date())
-                .total(order.getTotal())
-                .status(order.getStatus())
-                .order_items(order.getOrderItems().stream()
-                    .map(order_item -> OrderItemsDto.builder()
-                        .id_orderItem(order_item.getId_orderItem())
-                        .platesDto(platesService.convertToDto(order_item.getPlatesEntity()))
-                        .build())
-                    .collect(Collectors.toList()))  // Convertimos todos los OrderItems a OrderItemsDto
-                .build())
-            .collect(Collectors.toList());
-    
+        if (entity.getOrders() != null) {
+            ordersDto = entity.getOrders().stream()
+                .map(order -> OrdersDto.builder()
+                    .id_orders(order.getId_orders())
+                    .order_date(order.getOrder_date())
+                    .total(order.getTotal())
+                    .status(order.getStatus())
+                    .orderItems(
+                        order.getOrderItems().stream()
+                        .map(order_item -> OrderItemsDto.builder()
+                            .id_orderItem(order_item.getId_orderItem())
+                            .id_orders(order.getId_orders())
+                            .plates(platesService.convertToDto(order_item.getPlates()))
+                            .build()).collect(Collectors.toList()))  // Convertimos todos los OrderItems a OrderItemsDto
+                    .build()).collect(Collectors.toList());
+        }
+
         // Finalmente, creamos el CustumerDto y asignamos la lista de ordersDto
         return CustumerDto.builder()
             .id_custumer(entity.getId_custumer())
@@ -56,21 +64,30 @@ public class CustumerServiceImpl implements CustumerService {
             .build();
     }
 
-    private CustumerEntity convertToEntity(CustumerDto dto) {
+    @Override
+    public CustumerEntity convertToEntity(CustumerDto dto) {
+        
+        if(dto == null) { return null; }
+
+        List<OrdersEntity> ordersEntity = null;
     
-        // Ahora, convertimos las OrdersDto y las agregamos con el OrderItemsDto respectivo
-        List<OrdersEntity> ordersEntity = dto.getOrders().stream()
-            .map(order -> OrdersEntity.builder()
-                .id_orders(order.getId_orders())
-                .order_date(order.getOrder_date())
-                .total(order.getTotal())
-                .status(order.getStatus())
-                .orderItems(order.getOrder_items().stream().map(order_item -> OrderItemsEntity.builder()
-                .id_orderItem(order_item.getId_orderItem())
-                .platesEntity(platesService.convertToEntity(order_item.getPlatesDto()))
-                .build()).collect(Collectors.toList()))
-                .build())
-            .collect(Collectors.toList());
+        if (dto.getOrders() != null) {
+            // Ahora, convertimos las OrdersDto y las agregamos con el OrderItemsDto respectivo
+            ordersEntity = dto.getOrders().stream()
+                .map(order -> OrdersEntity.builder()
+                    .id_orders(order.getId_orders())
+                    .order_date(order.getOrder_date())
+                    .total(order.getTotal())
+                    .status(order.getStatus())
+                    .orderItems(
+                        order.getOrderItems().stream().map(order_item -> OrderItemsEntity.builder()
+                        .id_orderItem(order_item.getId_orderItem())
+                        .plates(PlatesEntity.builder().id_plates(order_item.getId_orderItem()).build())
+                        .build())
+                        .collect(Collectors.toList()))
+                    .build())
+                    .collect(Collectors.toList());
+        }
     
         // Finalmente, creamos el CustumerDto y asignamos la lista de ordersDto
         return CustumerEntity.builder()

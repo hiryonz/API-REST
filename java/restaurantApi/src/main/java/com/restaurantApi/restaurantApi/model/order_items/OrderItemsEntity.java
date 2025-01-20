@@ -1,5 +1,6 @@
 package com.restaurantApi.restaurantApi.model.order_items;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.restaurantApi.restaurantApi.model.orders.OrdersEntity;
 import com.restaurantApi.restaurantApi.model.plates.PlatesEntity;
 
@@ -8,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -28,12 +30,13 @@ public class OrderItemsEntity {
     private Long id_orderItem;
 
     //fk with orders
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id_orders")
+    @JsonBackReference //evita ciclos infinitos
     private OrdersEntity orders;
 
     //fk with plates
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id_plates")
-    private PlatesEntity platesEntity;
+    private PlatesEntity plates;
 }

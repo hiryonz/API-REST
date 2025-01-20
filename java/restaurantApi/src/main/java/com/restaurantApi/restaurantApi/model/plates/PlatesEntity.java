@@ -45,5 +45,5 @@ public class PlatesEntity {
     //categoria fk
     @ManyToOne()
     @JoinColumn(name = "id_category")
-    private CategoriesEntity categoriesEntity;
+    private CategoriesEntity categories;
 }

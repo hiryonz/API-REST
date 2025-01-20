@@ -7,11 +7,15 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.restaurantApi.restaurantApi.model.categories.CategoriesDto;
+import com.restaurantApi.restaurantApi.model.categories.CategoriesEntity;
 import com.restaurantApi.restaurantApi.model.plates.PlatesDto;
 import com.restaurantApi.restaurantApi.model.plates.PlatesEntity;
 import com.restaurantApi.restaurantApi.repository.PlatesRepo;
 import com.restaurantApi.restaurantApi.service.categoriesService.CategoriesService;
 import com.restaurantApi.restaurantApi.service.platesService.PlatesService;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class PlatesServiceImpl implements PlatesService {
@@ -26,8 +30,12 @@ public class PlatesServiceImpl implements PlatesService {
     public PlatesDto convertToDto(PlatesEntity entity) {
 
         if (entity == null) { return null; }
+        Long id_categories = null;
+        if(entity.getCategories() != null) {
+             id_categories = entity.getCategories().getId_category();
+        }else {
 
-
+        }
         return PlatesDto.builder()
         .id_plates(entity.getId_plates())
         .name(entity.getName())
@@ -35,7 +43,7 @@ public class PlatesServiceImpl implements PlatesService {
         .price(entity.getPrice())
         .image(entity.getImage())
         .availability(entity.getAvailability())
-        .categoriesDto(categoriesService.convertToDto(entity.getCategoriesEntity()))
+        .id_categories(id_categories)
         .build();
     }
 
@@ -51,13 +59,27 @@ public class PlatesServiceImpl implements PlatesService {
         .price(dto.getPrice())
         .image(dto.getImage())
         .availability(dto.getAvailability())
-        .categoriesEntity(categoriesService.convertToEntity(dto.getCategoriesDto()))
         .build();
     }
 
     @Override
     public PlatesDto save(PlatesDto plates) {
+
+            // Validar que el DTO no sea null
+            if (plates == null) {
+                throw new IllegalArgumentException("El plato no puede ser null");
+            }
+
+            // Validar que el categories_id no sea null
+            if (plates.getId_categories() == null) {
+                throw new IllegalArgumentException("El ID de categoría es requerido");
+            }
+
+        CategoriesDto categoryDto = categoriesService.findById(plates.getId_categories())
+        .orElseThrow(() -> new EntityNotFoundException("Categoría no encontrada con ID: " + plates.getId_categories()));
+    
         PlatesEntity platesEntity = convertToEntity(plates);
+        platesEntity.setCategories(categoriesService.convertToEntity(categoryDto));
         PlatesEntity savedPlate = platesRepo.save(platesEntity);
 
         return convertToDto(savedPlate);

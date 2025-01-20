@@ -20,6 +20,10 @@ public class CategoriesServiceImpl implements CategoriesService {
 
     @Override
     public CategoriesDto convertToDto(CategoriesEntity categoriesEntity) {
+        if(categoriesEntity == null ) {
+            return null;
+        }
+
         return CategoriesDto.builder()
         .id_category(categoriesEntity.getId_category())
         .name(categoriesEntity.getName())
@@ -29,6 +33,10 @@ public class CategoriesServiceImpl implements CategoriesService {
 
     @Override
     public CategoriesEntity convertToEntity(CategoriesDto categoriesDto) {
+        if(categoriesDto == null) {
+            return null;
+        }
+
         return CategoriesEntity.builder()
         .id_category(categoriesDto.getId_category())
         .name(categoriesDto.getName())

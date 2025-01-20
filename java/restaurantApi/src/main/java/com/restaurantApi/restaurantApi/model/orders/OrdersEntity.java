@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.restaurantApi.restaurantApi.model.custumers.CustumerEntity;
 import com.restaurantApi.restaurantApi.model.order_items.OrderItemsEntity;
 
@@ -51,5 +52,6 @@ public class OrdersEntity {
 
     //bidirectional fk with order_items
     @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference //evita los ciclos infinitos
     private List<OrderItemsEntity> orderItems;
 }
