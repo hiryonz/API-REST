@@ -5,17 +5,14 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.restaurantApi.restaurantApi.model.custumers.CustumerDto;
-import com.restaurantApi.restaurantApi.model.custumers.CustumerEntity;
 import com.restaurantApi.restaurantApi.model.order_items.OrderItemsDto;
 import com.restaurantApi.restaurantApi.model.order_items.OrderItemsEntity;
 import com.restaurantApi.restaurantApi.model.orders.OrdersDto;
 import com.restaurantApi.restaurantApi.model.orders.OrdersEntity;
 import com.restaurantApi.restaurantApi.model.plates.PlatesDto;
-import com.restaurantApi.restaurantApi.model.plates.PlatesEntity;
 import com.restaurantApi.restaurantApi.repository.OrdersRepo;
 import com.restaurantApi.restaurantApi.service.custumerService.CustumerService;
 import com.restaurantApi.restaurantApi.service.orderService.OrderService;
