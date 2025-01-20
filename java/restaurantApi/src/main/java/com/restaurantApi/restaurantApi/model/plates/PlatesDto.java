@@ -18,5 +18,5 @@ public class PlatesDto {
     private Double price;
     private String image;
     private int availability;
-    private CategoriesDto categoriesDto;
+    private Long id_categories;
 }

@@ -4,17 +4,22 @@ import java.util.List;
 import java.util.Optional;
 
 import com.restaurantApi.restaurantApi.model.custumers.CustumerDto;
+import com.restaurantApi.restaurantApi.model.custumers.CustumerEntity;
 
 public interface CustumerService {
 
+    CustumerDto convertToDto(CustumerEntity entity);
+
+    CustumerEntity convertToEntity(CustumerDto dto);
+
     CustumerDto save(CustumerDto custumer);
 
-    boolean deleteById(String id);
+    boolean deleteById(Long id);
 
-    Optional<CustumerDto> findById(String id);
+    Optional<CustumerDto> findById(Long id);
 
     List<CustumerDto> findAll();
 
-    boolean isExistsCustumer(String id);
+    boolean isExistsCustumer(Long id);
 
 }

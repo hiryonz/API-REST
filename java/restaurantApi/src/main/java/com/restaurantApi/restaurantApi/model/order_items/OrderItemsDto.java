@@ -16,8 +16,8 @@ public class OrderItemsDto {
     private Long id_orderItem;
 
     //fk with orders
-    private OrdersDto ordersDto;
+    private Long id_orders;
 
     //fk with plates
-    private PlatesDto platesDto;
+    private PlatesDto plates;
 }
