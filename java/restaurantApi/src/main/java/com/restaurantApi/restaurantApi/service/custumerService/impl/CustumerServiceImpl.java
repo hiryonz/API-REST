@@ -43,6 +43,7 @@ public class CustumerServiceImpl implements CustumerService {
                     .order_date(order.getOrder_date())
                     .total(order.getTotal())
                     .status(order.getStatus())
+                    
                     .orderItems(
                         order.getOrderItems().stream()
                         .map(order_item -> OrderItemsDto.builder()

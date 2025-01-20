@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.restaurantApi.restaurantApi.model.categories.CategoriesDto;
-import com.restaurantApi.restaurantApi.model.categories.CategoriesEntity;
 import com.restaurantApi.restaurantApi.model.plates.PlatesDto;
 import com.restaurantApi.restaurantApi.model.plates.PlatesEntity;
 import com.restaurantApi.restaurantApi.repository.PlatesRepo;

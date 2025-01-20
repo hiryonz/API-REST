@@ -1,6 +1,5 @@
 package com.restaurantApi.restaurantApi.model.plates;
 
-import com.restaurantApi.restaurantApi.model.categories.CategoriesDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

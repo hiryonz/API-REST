@@ -1,6 +1,5 @@
 package com.restaurantApi.restaurantApi.model.order_items;
 
-import com.restaurantApi.restaurantApi.model.orders.OrdersDto;
 import com.restaurantApi.restaurantApi.model.plates.PlatesDto;
 
 import lombok.AllArgsConstructor;

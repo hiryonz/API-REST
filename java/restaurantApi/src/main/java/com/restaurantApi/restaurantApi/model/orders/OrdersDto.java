@@ -3,7 +3,6 @@ package com.restaurantApi.restaurantApi.model.orders;
 import java.util.Date;
 import java.util.List;
 
-import com.restaurantApi.restaurantApi.model.custumers.CustumerDto;
 import com.restaurantApi.restaurantApi.model.order_items.OrderItemsDto;
 
 import lombok.AllArgsConstructor;
