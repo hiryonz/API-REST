@@ -106,7 +106,7 @@ Created and update a recipe.
 
 *Response:*
 - Status Code: 200 OK (Success/UPDATED)
-- Status Code: ??? CREATED (CREATED/INSERT)
+- Status Code: 201 CREATED (CREATED/INSERT)
 
 *Response Body Example:*
 ```json
